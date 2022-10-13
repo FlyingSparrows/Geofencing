@@ -58,4 +58,7 @@
     <!-- Content Description Strings -->
     <string name="android_map_description">An Android robot with a map</string>
 
+    <string name="location_dialog_text_android_10">Voor het gebruik van deze app is de locatietoegang van uw apparaat nodig</string>
+    <string name="location_dialog_text_android_11">Voor het gebruik van deze app moeten de locatie rechten staan op "altijd toestaan"</string>
+
 </resources>
