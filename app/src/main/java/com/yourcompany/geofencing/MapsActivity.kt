@@ -52,9 +52,9 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val sydney = LatLng(-34.0, 151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10F))
+        val wema = LatLng(52.57519741307314, 6.595944030687099)
+        map.addMarker(MarkerOptions().position(wema).title("Marker at WeMa"))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(wema, 15F))
 
         checkLocationPersmissions {
             if (it) {
