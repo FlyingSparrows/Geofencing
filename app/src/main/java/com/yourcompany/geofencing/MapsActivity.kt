@@ -26,6 +26,7 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var geofencingClient : GeofencingClient
     private lateinit var binding: ActivityMapsBinding
+    val geofenceList = arrayListOf<Geofence>()
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceReceiver::class.java)
@@ -63,12 +64,6 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
             } else {
                 println("No permission")
             }
-        }
-    }
-
-    private fun addGeofences() {
-        GeofencingConstants.LANDMARK_DATA.forEach {
-            addGeofence(it)
         }
     }
 
@@ -125,16 +120,12 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun addCircle(latLng: LatLng, radius : Double) {
-        val circleOptions = CircleOptions()
-        circleOptions.center(latLng)
-        circleOptions.radius(radius)
-        circleOptions.strokeColor(Color.argb(50, 70, 0, 0))
-        circleOptions.fillColor(Color.argb(70, 150, 0, 0))
-        circleOptions.strokeWidth(4F)
-        map.addCircle(circleOptions)
+    private fun addGeofences() {
+        GeofencingConstants.LANDMARK_DATA.forEach {
+            addGeofence(it)
+        }
+        setGeofences()
     }
-
 
     @SuppressLint("MissingPermission")
     private fun addGeofence(data : LandmarkDataObject) {
@@ -145,24 +136,39 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
                 data.latLong.longitude,
                 GeofencingConstants.GEOFENCE_RADIUS_IN_METERS
             )
+            .setLoiteringDelay(20000)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT or Geofence.GEOFENCE_TRANSITION_DWELL)
             .build()
 
         addCircle(data.latLong, geofence.radius.toDouble())
+        geofenceList.add(geofence)
+    }
 
+    private fun addCircle(latLng: LatLng, radius : Double) {
+        val circleOptions = CircleOptions()
+        circleOptions.center(latLng)
+        circleOptions.radius(radius)
+        circleOptions.strokeColor(Color.argb(50, 70, 0, 0))
+        circleOptions.fillColor(Color.argb(70, 150, 0, 0))
+        circleOptions.strokeWidth(4F)
+        map.addCircle(circleOptions)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setGeofences() {
         val request = GeofencingRequest.Builder()
-            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-            .addGeofence(geofence)
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER or GeofencingRequest.INITIAL_TRIGGER_EXIT or GeofencingRequest.INITIAL_TRIGGER_DWELL)
+            .addGeofences(geofenceList)
             .build()
 
         geofencingClient.addGeofences(request, geofencePendingIntent).run {
             addOnSuccessListener {
-                println("Geofence " + data.id + " toegevoegd!")
+                println("Geofences toegevoegd!")
             }
             addOnFailureListener {
                 if (it.message != null) {
-                    println("Geofence " + data.id + " NIET toegevoegd")
+                    println("Geofences NIET toegevoegd")
                 } else {
                     println("it message is null")
                 }
