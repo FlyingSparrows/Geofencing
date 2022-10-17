@@ -32,29 +32,29 @@ data class LandmarkDataObject(val id: String, val hint: Int, val name: Int, val 
 internal object GeofencingConstants {
     // The geofences data
     val LANDMARK_DATA = arrayOf(
-//        LandmarkDataObject(
-//            "Wildlands",
-//            R.string.golden_gate_bridge_hint,
-//            R.string.golden_gate_bridge_location,
-//            LatLng(52.78300864486902, 6.8911734117208745)),
+        LandmarkDataObject(
+            "Wildlands",
+            R.string.golden_gate_bridge_hint,
+            R.string.golden_gate_bridge_location,
+            LatLng(52.78300864486902, 6.8911734117208745)),
 
         LandmarkDataObject(
             "WeMa Mobile",
             R.string.ferry_building_hint,
             R.string.ferry_building_location,
             LatLng(52.574773582748406, 6.595911842399657)),
-//
-//        LandmarkDataObject(
-//            "Kuipershof",
-//            R.string.ferry_building_hint,
-//            R.string.ferry_building_location,
-//            LatLng(52.746423294108745, 6.967251298227053)),
-//
-//        LandmarkDataObject(
-//            "N34",
-//            R.string.ferry_building_hint,
-//            R.string.ferry_building_location,
-//            LatLng(   52.59063733658867, 6.632868455892675))
+
+        LandmarkDataObject(
+            "Kuipershof",
+            R.string.ferry_building_hint,
+            R.string.ferry_building_location,
+            LatLng(52.746423294108745, 6.967251298227053)),
+
+        LandmarkDataObject(
+            "N34",
+            R.string.ferry_building_hint,
+            R.string.ferry_building_location,
+            LatLng(   52.59063733658867, 6.632868455892675))
     )
     const val GEOFENCE_RADIUS_IN_METERS = 200f
 }

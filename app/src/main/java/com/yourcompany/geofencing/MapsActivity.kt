@@ -26,7 +26,7 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var geofencingClient : GeofencingClient
     private lateinit var binding: ActivityMapsBinding
-    val geofenceList = arrayListOf<Geofence>()
+    private val geofenceList = arrayListOf<Geofence>()
 
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceReceiver::class.java)
@@ -157,8 +157,10 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private fun setGeofences() {
+        println(geofenceList.size)
+        println("set geofences")
         val request = GeofencingRequest.Builder()
-            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER or GeofencingRequest.INITIAL_TRIGGER_EXIT or GeofencingRequest.INITIAL_TRIGGER_DWELL)
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER or GeofencingRequest.INITIAL_TRIGGER_DWELL)
             .addGeofences(geofenceList)
             .build()
 

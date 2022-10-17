@@ -12,7 +12,6 @@ class GeofenceReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
-
         if (geofencingEvent != null) {
             if (geofencingEvent.hasError()) {
                 val errorMessage = errorMessage(context, geofencingEvent.errorCode)
@@ -34,8 +33,6 @@ class GeofenceReceiver : BroadcastReceiver() {
                     showOkDialog("Uit de geofence gegaan!", DialogInterface.OnClickListener { dialog, which -> })
                 }
             }
-
         }
-
     }
 }
