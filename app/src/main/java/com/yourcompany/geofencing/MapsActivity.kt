@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -23,8 +22,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yourcompany.geofencing.databinding.ActivityMapsBinding
 
-
-@RequiresApi(Build.VERSION_CODES.M)
 class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var geofencingClient : GeofencingClient
@@ -158,15 +155,6 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
             .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
             .addGeofence(geofence)
             .build()
-
-//        val geofenceIntent: PendingIntent by lazy {
-//            val intent = Intent(this, GeofenceReceiver::class.java)
-//            val flags = when {
-//                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//                else -> PendingIntent.FLAG_UPDATE_CURRENT
-//            }
-//            PendingIntent.getBroadcast(this, 0, intent, flags)
-//        }
 
         geofencingClient.addGeofences(request, geofencePendingIntent).run {
             addOnSuccessListener {

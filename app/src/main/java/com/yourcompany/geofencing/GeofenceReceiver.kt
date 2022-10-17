@@ -11,7 +11,6 @@ import nl.wemamobile.wemalibrary.DialogHelper.showOkDialog
 class GeofenceReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
         if (geofencingEvent != null) {
@@ -21,20 +20,31 @@ class GeofenceReceiver : BroadcastReceiver() {
                 return
             }
 
-            val geofenceTransition = geofencingEvent.geofenceTransition
-
-            println(geofenceTransition)
-
-            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
-                println(context.getString(R.string.geofence_entered))
-               showOkDialog("Geofence gepasseerd!", DialogInterface.OnClickListener { dialog, which -> })
-            } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
-                println("Je bent er nog steeds")
-                showOkDialog("Nog steeds in de geofence", DialogInterface.OnClickListener { dialog, which -> })
-            } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
-                println("Je bent uit de geofence gegaan")
-                showOkDialog("Uit de geofence gegaan!", DialogInterface.OnClickListener { dialog, which -> })
+            when (geofencingEvent.geofenceTransition) {
+                Geofence.GEOFENCE_TRANSITION_ENTER -> {
+                    println(context.getString(R.string.geofence_entered))
+                    showOkDialog("Geofence gepasseerd!", DialogInterface.OnClickListener { dialog, which -> })
+                }
+                Geofence.GEOFENCE_TRANSITION_DWELL -> {
+                    println("Je bent er nog steeds")
+                    showOkDialog("Nog steeds in de geofence", DialogInterface.OnClickListener { dialog, which -> })
+                }
+                Geofence.GEOFENCE_TRANSITION_EXIT -> {
+                    println("Je bent uit de geofence gegaan")
+                    showOkDialog("Uit de geofence gegaan!", DialogInterface.OnClickListener { dialog, which -> })
+                }
             }
+
+//            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+//                println(context.getString(R.string.geofence_entered))
+//               showOkDialog("Geofence gepasseerd!", DialogInterface.OnClickListener { dialog, which -> })
+//            } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
+//                println("Je bent er nog steeds")
+//                showOkDialog("Nog steeds in de geofence", DialogInterface.OnClickListener { dialog, which -> })
+//            } else if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+//                println("Je bent uit de geofence gegaan")
+//                showOkDialog("Uit de geofence gegaan!", DialogInterface.OnClickListener { dialog, which -> })
+//            }
 
         }
 
