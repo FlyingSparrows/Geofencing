@@ -11,13 +11,11 @@ import nl.wemamobile.wemalibrary.DialogHelper.showOkDialog
 class GeofenceReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
-
         if (geofencingEvent != null) {
-            println("is neit null")
             if (geofencingEvent.hasError()) {
-                println("heeft error")
                 val errorMessage = errorMessage(context, geofencingEvent.errorCode)
                 println(errorMessage)
                 return
@@ -42,5 +40,3 @@ class GeofenceReceiver : BroadcastReceiver() {
 
     }
 }
-
-private const val TAG = "GeofenceReceiver"

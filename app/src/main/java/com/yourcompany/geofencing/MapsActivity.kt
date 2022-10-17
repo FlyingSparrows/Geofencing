@@ -3,6 +3,7 @@ package com.yourcompany.geofencing
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.PendingIntent.*
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -29,15 +30,14 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
     private lateinit var geofencingClient : GeofencingClient
     private lateinit var binding: ActivityMapsBinding
 
-
-//    private val geofenceIntent: PendingIntent by lazy {
-//        val intent = Intent(this, GeofenceReceiver::class.java)
-//        val flags = when {
-//            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//            else -> PendingIntent.FLAG_UPDATE_CURRENT
-//        }
-//        PendingIntent.getBroadcast(this, 0, intent, flags)
-//    }
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(this, GeofenceReceiver::class.java)
+        val flags = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> FLAG_UPDATE_CURRENT or FLAG_MUTABLE
+            else -> FLAG_UPDATE_CURRENT
+        }
+        getBroadcast(this, 0, intent, flags)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,13 +61,10 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
 
         checkLocationPersmissions {
             if (it) {
-                // Heeft toestemming
-                println("toestemming")
                 map.isMyLocationEnabled = true
                 addGeofences()
             } else {
-                println("geen toestemming")
-                // Heeft geen toestemming
+                println("No permission")
             }
         }
     }
@@ -131,17 +128,6 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
         }
     }
 
-
-//    override fun onMapLongClick(p0: LatLng) {
-//        addMarker(p0)
-//        addCircle(p0, GEOFENCE_RADIUS.toDouble())
-//    }
-//
-//    private fun addMarker(latLng: LatLng) {
-//        val markerOptions = MarkerOptions().position(latLng)
-//        map.addMarker(markerOptions)
-//    }
-
     private fun addCircle(latLng: LatLng, radius : Double) {
         val circleOptions = CircleOptions()
         circleOptions.center(latLng)
@@ -173,11 +159,16 @@ class MapsActivity : ApplicationActivity(), OnMapReadyCallback {
             .addGeofence(geofence)
             .build()
 
-        val geofenceIntent: PendingIntent by lazy {
-            val intent = Intent(this, GeofenceReceiver::class.java)
-            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        }
-        geofencingClient.addGeofences(request, geofenceIntent).run {
+//        val geofenceIntent: PendingIntent by lazy {
+//            val intent = Intent(this, GeofenceReceiver::class.java)
+//            val flags = when {
+//                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//                else -> PendingIntent.FLAG_UPDATE_CURRENT
+//            }
+//            PendingIntent.getBroadcast(this, 0, intent, flags)
+//        }
+
+        geofencingClient.addGeofences(request, geofencePendingIntent).run {
             addOnSuccessListener {
                 println("Geofence " + data.id + " toegevoegd!")
             }
